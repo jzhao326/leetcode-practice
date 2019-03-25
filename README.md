@@ -79,3 +79,37 @@ class Solution:
         return ls
  ```
  Basically this method improved the function of searching. It will check both ends and adjust the index according to the bias to target. To eliminate the duplicates, we skip the index that correspond to the same value in the list.
+ 
+ ## 227.Basic Calculator 2
+**Implement a basic calculator to evaluate a simple expression string.
+The expression string contains only non-negative integers, +, -, \*, / operators and empty spaces . The integer division should truncate toward zero.**
+
+**example input**:     
+"3+2*2"
+
+**example output**:      
+7
+
+Use three variables to store the current result, sign and number while marching through the string. Considering the precedence of \* and /, we calculate out the result related to these 2 signs.
+
+```
+class Solution:
+    def calculate(self, s):
+        num, stack, sign = 0, [], "+" #initiate 3 temp
+        for i in range(len(s)):
+            if s[i].isdigit():
+                num = num * 10 + int(s[i])
+            if s[i] in "+-*/" or i == len(s) - 1:
+                if sign == "+":
+                    stack.append(num)
+                elif sign == "-":
+                    stack.append(-num)
+                elif sign == "*":
+                    stack.append(stack.pop()*num)
+                else:
+                    stack.append(int(stack.pop()/num))#do * and / first
+                num = 0
+                sign = s[i]
+        return sum(stack)#do + and - in the end
+
+```
